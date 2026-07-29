@@ -23,7 +23,8 @@ Each skill is a self‑contained module that guides Codex through a structured, 
 | **game-feature-impl** | Turn designs into implementation plans | Feature breakdown, implementation steps, API contracts, code scaffolding/pseudocode |
 | **game-performance** | Optimize CPU/GPU, memory, draw calls, frame‑rate | Profiling guide, optimization techniques, performance budgets |
 
-> **Note:** Each skill also includes a suggested scripts/, eferences/, and ssets/ directory layout (with example file names) so you can easily add reusable tools, templates, and reference material later.
+> **Note:** Each skill also includes a suggested scripts/, 
+eferences/, and ssets/ directory layout (with example file names) so you can easily add reusable tools, templates, and reference material later.
 
 ## 🛠️ How to Use
 
@@ -53,7 +54,8 @@ Each skill is a self‑contained module that guides Codex through a structured, 
 
 3. **Iterate** – Provide feedback or ask for a specific section (e.g., “expand the monetization model”) and the skill will continue from where it left off.
 
-4. **Add your own resources** – Populate the optional scripts/, eferences/, and ssets/ sub‑folders with helpers, templates, or domain‑specific data to make the skill even more powerful for your team.
+4. **Add your own resources** – Populate the optional scripts/, 
+eferences/, and ssets/ sub‑folders with helpers, templates, or domain‑specific data to make the skill even more powerful for your team.
 
 ## 📖 Skill Structure (SKILL.md)
 
@@ -71,14 +73,16 @@ ame and rich description (the trigger for Codex).
   5. Validation Check  
 - **Detailed Guidance** – Input expectations, step‑by‑step procedure, decision points, quality criteria, common pitfalls.  
 - **Output Format** – Primary format (structured Markdown) plus optional alternatives (CSV/Excel, Mermaid diagrams, JSON schemas, pseudocode).  
-- **Resources (optional)** – Example files for scripts/, eferences/, ssets/; delete unused sections.
+- **Resources (optional)** – Example files for scripts/, 
+eferences/, ssets/; delete unused sections.
 
 This structure ensures that **any Codex instance (or compatible AI agent)** can understand when to call the skill, what it does, and how to steer it toward high‑quality results.
 
 ## 🧩 Extending & Customizing
 
 - **Add helper scripts** – Place Python/Bash/etc. files in scripts/ and reference them in the “Detailed Guidance” or “Resources” section.  
-- **Store reference material** – Design patterns, GDD outlines, monetization model tables, etc., go in eferences/.  
+- **Store reference material** – Design patterns, GDD outlines, monetization model tables, etc., go in 
+eferences/.  
 - **Include templates** – Word/Google‑Doc templates, icon sets, HTML skeletons, etc., belong in ssets/.  
 - **Adjust UI metadata** – Edit gents/openai.yaml to change the display name, short description, brand color, or default prompt if you want a different presentation in the Codex skill picker.
 
@@ -88,7 +92,7 @@ Clone or copy this repository into your Codex skills location:
 
 `ash
 # From the root of your Codex workspace (or ~/.codex/skills/)
-git clone https://github.com/your-username/game-dev-skills.git skills
+git clone https://github.com/lpf513/gameSkills.git skills
 # Or simply copy the folders:
 cp -r path/to/this/repo/* ~/.codex/skills/
 `
@@ -179,7 +183,8 @@ This collection is released under the **MIT License** – you are free to use, m
 4. **丰富资源目录**  
    按需在每个技能目录下添加：  
    - scripts/：放置 Python、Bash 等辅助脚本（例如生成 GDD 的模板脚本、数值计算工具）  
-   - eferences/：放文档、行业最佳实践、参考表格等  
+   - 
+eferences/：放文档、行业最佳实践、参考表格等  
    - ssets/：存放模板文件（Word/Google Docs 表格、图标集、UI 原型等）  
 
    只要在 SKILL.md 的 “Resources” 部分说明这些文件的用途，Codex 在需要时可以直接读取或调用它们。
@@ -225,7 +230,8 @@ ame：技能标识（用于 $技能名 调用）
 - **## Resources（可选资源）**  
   仅在你实际创建对应目录时保留此小节，列出建议放置的文件及其用途，例如：  
   - scripts/：generate_gdd.py、alance_calc.py、level_template.py  
-  - eferences/：gdd_structure.md、system_design_patterns.md、monetization_models.csv  
+  - 
+eferences/：gdd_structure.md、system_design_patterns.md、monetization_models.csv  
   - ssets/：gdd_template.docx、icon_set/（里面放 Milestones、Systems、Features 图标）  
 
   如果不需要某类资源，直接删除对应小节即可。
@@ -233,7 +239,8 @@ ame：技能标识（用于 $技能名 调用）
 ## 🧩 如何扩展与自定义
 
 - **添加帮助脚本**：把实用的 Python/Bash 等脚本放进 scripts/，并在“详细指导”或“资源”部分说明它们的作用。  
-- **存放参考资料**：把行业白皮书、设计模式汇总、盈利模型对照表等文件放进 eferences/。  
+- **存放参考资料**：把行业白皮书、设计模式汇总、盈利模型对照表等文件放进 
+eferences/。  
 - **放置模板**：Word/Google Docs 模板、图标集、HTML 骨架等放进 ssets/。  
 - **调整 UI 元信息**：编辑 gents/openai.yaml，修改 display_name、short_description、rand_color 或 default_prompt，以便在 Codex 技能选择器中呈现你想要的展示效果。  
 - **新增子技能**：如果你发现经常需要某种特定输出（如 “live-ops 运营计划”），可以参考现有模板新建一个文件夹，按照同样结构编写 SKILL.md 与 openai.yaml。
@@ -244,7 +251,7 @@ ame：技能标识（用于 $技能名 调用）
 
 `ash
 # 假设你的 Codex 工作区根目录是 ~/codex-workspace
-git clone https://github.com/your-username/game-dev-skills.git ~/codex-workspace/skill
+git clone https://github.com/lpf513/gameSkills.git ~/codex-workspace/skill
 # 或者手动复制：
 cp -r /path/to/this/repo/* ~/codex-workspace/skill/
 `
@@ -266,7 +273,8 @@ cp -r /path/to/this/repo/* ~/codex-workspace/skill/
 
 1. 新建一个文件夹，名称使用 kebab-case（如 live-ops-planning）。  
 2. 内部放置 SKILL.md（参照上面的模板）以及 gents/openai.yaml。  
-3. 如需，添加 scripts/、eferences/、ssets/ 子目录并说明用途。  
+3. 如需，添加 scripts/、
+eferences/、ssets/ 子目录并说明用途。  
 4. 在 Pull Request 描述中简述该技能解决的问题及其典型使用场景。  
 
 我们会审查并合并符合质量标准的贡献。
