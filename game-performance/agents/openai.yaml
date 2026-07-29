@@ -1,0 +1,10 @@
+interface:
+  display_name: "Game Performance Optimization"
+  short_description: "Optimize game performance and resource usage"
+  icon_small: "./assets/skill-icon.png"
+  icon_large: "./assets/skill-logo.svg"
+  brand_color: "#3B82F6"
+  default_prompt: "Use -performance to analyze and improve game performance."
+
+policy:
+  allow_implicit_invocation: true

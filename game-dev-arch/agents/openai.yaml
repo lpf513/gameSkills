@@ -1,0 +1,10 @@
+interface:
+  display_name: "Game Development Architecture"
+  short_description: "Design game engine architecture and systems"
+  icon_small: "./assets/skill-icon.png"
+  icon_large: "./assets/skill-logo.svg"
+  brand_color: "#3B82F6"
+  default_prompt: "Use -dev-arch to outline a games technical architecture."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,10 @@
+interface:
+  display_name: "Data Table Generator"
+  short_description: "Generate game data tables and spreadsheets"
+  icon_small: "./assets/skill-icon.png"
+  icon_large: "./assets/skill-logo.svg"
+  brand_color: "#3B82F6"
+  default_prompt: "Use -table-generator to create balanced stat tables for items, enemies, or abilities."
+
+policy:
+  allow_implicit_invocation: true

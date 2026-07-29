@@ -1,0 +1,10 @@
+interface:
+  display_name: "Game Feature Implementation"
+  short_description: "Implement game features from design"
+  icon_small: "./assets/skill-icon.png"
+  icon_large: "./assets/skill-logo.svg"
+  brand_color: "#3B82F6"
+  default_prompt: "Use -feature-impl to implement a designed feature with code scaffolding."
+
+policy:
+  allow_implicit_invocation: true

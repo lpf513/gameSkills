@@ -1,0 +1,10 @@
+interface:
+  display_name: "Game Economy"
+  short_description: "Design in-game economies and monetization"
+  icon_small: "./assets/skill-icon.png"
+  icon_large: "./assets/skill-logo.svg"
+  brand_color: "#3B82F6"
+  default_prompt: "Use -economy to design currency systems, monetization, and resource flows."
+
+policy:
+  allow_implicit_invocation: true
