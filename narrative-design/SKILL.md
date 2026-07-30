@@ -1,55 +1,86 @@
 ---
 name: narrative-design
 description: >-
-  Develop game narratives including world-building, character arcs, dialogue, cutscenes, and environmental storytelling. Use when the user needs to write a games story, design characters, or create branching narratives. Outputs include story bibles, character profiles, dialogue scripts, and plot flowcharts.
+  Craft game narratives including world-building, character arcs, branching dialogues, cutscenes, and environmental storytelling. Use when the user says "write game story", "world-building", "character design", "branching narrative", "dialogue tree", "plot outline", or asks to build story assets for a game.
 ---
 
 # Narrative Design
 
-## Philosophy
+## Core Rules
 
-This skill follows a pragmatic, evidence-based approach to narrative design. It emphasizes clarity, actionability, and integration with broader development workflows. Outputs are designed to be directly usable by designers, developers, and producers without further interpretation.
+1. "Show in system" beats "tell in text". Every story element should have gameplay consequences or representations.
+2. Branching narratives use a yes/no tree with no more than 3 meaningful forks per arc (decision budget).
+3. Every character must have a want, a contradicting need, and a limiter that prevents them from getting it too easily.
+4. Dialogue counts: GOLDEN THREAD should be 50 chars or fewer. No exposition dump longer than 20 words without player action.
 
-## Core Workflow
+## Workflow
 
-1. **Input Gathering** – Collect any existing constraints, references, or goals from the user.
-2. **Domain Analysis** – Break down the request into fundamental components and systems.
-3. **Structured Design** – Apply established frameworks and patterns specific to narrative design.
-4. **Output Synthesis** – Produce well-formatted deliverables that match industry standards.
-5. **Validation Check** – Ensure internal consistency and readiness for implementation.
+### 1. World Brief
 
-## Detailed Guidance
+Start with a 5-sentence world elevator:
+- What is the world? (When+where)
+- What is the state of the world? (Decay, hope, order, chaos)
+- What happened 24 hours ago? (The channel of immediate conflict)
+- What will happen in 72 hours if the player does NOTHING? (Urgency)
+- What shows the player the stakes visually?
 
-- **Input expectations**: Accepts bullet points, rough ideas, or existing documents. Asks clarifying questions if scope is ambiguous.
-- **Step-by-step procedures**: Follows the workflow above, emitting structured Markdown by default.
-- **Decision points**: Adapts depth based on project scale (indie vs AAA) and user role (designer vs programmer).
-- **Quality criteria**: Outputs are specific, measurable, unambiguous, and aligned with stated goals.
-- **Common pitfalls**: Avoids vague language, over-specification prematurely, and ignoring technical constraints.
+### 2. Character Roster
+
+Table:
+
+| Name | Role | Want | Need | Limiter | Arc from/till |
+
+### 3. Main Plot Spine
+
+Act-level summary:
+- Act 0 (stable world)
+- Act 1 (inciting event)
+- Act 2 (complication - mid crisis)
+- Act 3 (cliffhanger)
+
+### 4. Branching Decision Map
+
+Produce a Mermaid diagram with decision points and consequence lines. For each fork:
+- Option 1: ...
+- Option 2: ...
+- One-line consequence after option.
+
+### 5. Dialogue Standards
+
+- Max 3 exchanges before returning to player input.
+- Include at least one silence / pause answer option.
+- NPC motivation exposed by action, not implication.
+
+### 6. Environmental Storytelling
+
+List 3-5 environmental vignettes that show world depth without spoken or written text.
+
+## Quality Checklist
+
+- [ ] Character has want + need + past limiter
+- [ ] Urgency visible in world (72h clock)
+- [ ] Dialogue block <= 3 exchanges before player input
+- [ ] No more than 3 meaningful choices per branch
+- [ ] Environment carries story (not just narration)
+
 
 ## Output Format
 
-Primarily outputs structured Markdown with clear headings, tables, and lists. Can also produce:
-- CSV/Excel tables (via data-table-generator sub-skill)
-- Diagrams described in Mermaid syntax
-- JSON schemas for data structures
-- Pseudocode or language-agnostic logic specs
+- **Story Bible** — structured Markdown with world, characters, and plot arc
+- **Character Profile Table** — name, role, want, need, limiter, arc column
+- **Dialogue Script** — branching decision tree with player-action breaks
+- **Mermaid Branching Map** — visual flow of key decision points and consequences
+- **Environmental Vignettes** — 3–5 prose paragraphs describing world details without spoken words
 
-When appropriate, the skill will suggest using companion skills (e.g., data-table-generator for numbers, level-design for maps) and invoke them.
+## Quality Checklist
 
-## Resources (optional)
+- [ ] Every main character has want + need + advance limiter
+- [ ] 72-hour urgency visible in world description
+- [ ] Dialogue token budget: no exposition dump > 8 words without player action
+- [ ] Max 3 meaningful branching choices per arc
+- [ ] Environment shows story without narration
+## Common Mistakes
 
-### scripts/
-- generate_gdd.py – Helper script to convert structured data into full GDD Markdown.
-- balance_calc.py – Probability and expected value calculator for game systems.
-- level_template.py – Procedural level layout generator based on parameters.
-
-### references/
-- gdd_structure.md – Canonical outline of a professional GDD.
-- system_design_patterns.md – Common architectural patterns in game systems.
-- monetization_models.csv – Reference table of f2p, premium, and hybrid models.
-
-### assets/
-- gdd_template.docx – Optional Word template for teams requiring DOCX.
-- icon_set/ – Simple PNG icons for Milestones, Systems, Features.
-
----
+- Exposition instead of demonstration.
+- Characters interchangeable by tropes, not limiter.
+- Too many choice branches -> shatter narrative coherence.

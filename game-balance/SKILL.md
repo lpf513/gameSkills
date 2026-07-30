@@ -1,55 +1,66 @@
----
+﻿---
 name: game-balance
 description: >-
-  Balance game systems through mathematical modeling, probability analysis, and empirical tuning. Use when the user wants to tune damage values, economy rates, progression curves, or loot tables. Outputs include formulas, spreadsheets, simulation results, and balancing recommendations.
+  Balance game numerical systems through mathematical modeling, probability analysis, and tuning recommendations. Use when the user says "balance combat", "tune damage values", "DPS calculation", "stat curve", "item power scaling", "HP progression", "loot table balance", or needs to derive/validate numerical relationships between game entities.
 ---
 
 # Game Balance
 
-## Philosophy
+## Rules
 
-This skill follows a pragmatic, evidence-based approach to game balance. It emphasizes clarity, actionability, and integration with broader development workflows. Outputs are designed to be directly usable by designers, developers, and producers without further interpretation.
+1. Every variable must have a TIME dimension. "DPS" is meaningless without "time-to-kill" and "combat duration".
+2. Every tuning parameter expressed as: baseline tolerance (e.g., "200 20 at level 10").
+3. Use multiplication analysis: never say "25% more damage" without TTK impact.
+4. Never tune in isolation: small global multiplier changes destroy local values.
 
-## Core Workflow
+## Core Cycles
 
-1. **Input Gathering** – Collect any existing constraints, references, or goals from the user.
-2. **Domain Analysis** – Break down the request into fundamental components and systems.
-3. **Structured Design** – Apply established frameworks and patterns specific to game balance.
-4. **Output Synthesis** – Produce well-formatted deliverables that match industry standards.
-5. **Validation Check** – Ensure internal consistency and readiness for implementation.
+### Formulas Reference
 
-## Detailed Guidance
+**Combat Model:**
+- Effective Damage Per Second (EDPS) = (baseDMG x critMultipper x hitRate) / attackInterval
+- Time To Kill (TTK) = target_HP / attacker_EDPS
+- EHP (Effective HP) = base_HP x (1 + armor / armor_scale) under armor mode
 
-- **Input expectations**: Accepts bullet points, rough ideas, or existing documents. Asks clarifying questions if scope is ambiguous.
-- **Step-by-step procedures**: Follows the workflow above, emitting structured Markdown by default.
-- **Decision points**: Adapts depth based on project scale (indie vs AAA) and user role (designer vs programmer).
-- **Quality criteria**: Outputs are specific, measurable, unambiguous, and aligned with stated goals.
-- **Common pitfalls**: Avoids vague language, over-specification prematurely, and ignoring technical constraints.
+**Progress Model:**
+- Cumulative XP from level a to b: sum(xp_per_level(i)) for i in [a, b)
+- Speed decrease: base_cost / level_base_cost (progressive ratio)
 
-## Output Format
+**Random System:**
+- EV = sum(probability_i * reward_value_i)
+- Variance = sum(1/(prob_i)) per rare acquisition
 
-Primarily outputs structured Markdown with clear headings, tables, and lists. Can also produce:
-- CSV/Excel tables (via data-table-generator sub-skill)
-- Diagrams described in Mermaid syntax
-- JSON schemas for data structures
-- Pseudocode or language-agnostic logic specs
+### Threading Tuning Protocol
 
-When appropriate, the skill will suggest using companion skills (e.g., data-table-generator for numbers, level-design for maps) and invoke them.
+When asked to balance:
+1. **Scope:** Define attribute ranges, combos, benchmarks.
+2. **Model:** Build formula or lookup table.
+3. **Static Check:** Validate at min/max values.
+4. **Trial:** Apply delta, re-check all combos.
+5. **Present:** Show low/typical/high anchor points.
+6. **Monte Carlo (optional):** Run 10k samples for density.
 
-## Resources (optional)
+## Workflow
 
-### scripts/
-- generate_gdd.py – Helper script to convert structured data into full GDD Markdown.
-- balance_calc.py – Probability and expected value calculator for game systems.
-- level_template.py – Procedural level layout generator based on parameters.
+The 6-step tuning protocol is followed for every balance request: Scope → Model → Check → Adjust → Present → Simulate.
 
-### references/
-- gdd_structure.md – Canonical outline of a professional GDD.
-- system_design_patterns.md – Common architectural patterns in game systems.
-- monetization_models.csv – Reference table of f2p, premium, and hybrid models.
+## Deliverable Format
 
-### assets/
-- gdd_template.docx – Optional Word template for teams requiring DOCX.
-- icon_set/ – Simple PNG icons for Milestones, Systems, Features.
+- **Formulas specification** as markdown table with variable definitions
+- **Anchor data** for 3 reference levels (early, mid, late)
+- **Simulation result** (optional): 2-3 percentile points
+- **Red flag list** — where tuning collapses (e.g., one-shot kills possible)
 
----
+## Anti-Enemplay Checklist
+
+- [ ] TTK checked across all gear combinations
+- [ ] Global multiplier drifting caught and isolated
+- [ ] Scale breakers (high values) verified as bounded
+- [ ] Low-level enemy not stronger than mid-level
+- [ ] Tangential balance (infinite combo / stun lock) flagged
+
+## Common Pitfalls
+
+- "Just increase HP 20%" without checking grind-vs-challenge
+- Adjusting single values leaks elsewhere: verify against entire matrix
+- Weak enemies at high level create imbalance when scaled differently

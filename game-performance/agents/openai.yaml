@@ -1,10 +1,12 @@
-interface:
-  display_name: "Game Performance Optimization"
-  short_description: "Optimize game performance and resource usage"
+﻿interface:
+  display_name: "Game Performance"
+  short_description: "Optimize game framerate and memory usage"
   icon_small: "./assets/skill-icon.png"
   icon_large: "./assets/skill-logo.svg"
-  brand_color: "#3B82F6"
-  default_prompt: "Use -performance to analyze and improve game performance."
+  brand_color: "#8E44AD"
+  default_prompt: "Use $game-performance to perform its core function."
 
 policy:
   allow_implicit_invocation: true
+
+

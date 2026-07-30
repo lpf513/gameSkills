@@ -1,10 +1,12 @@
-interface:
+﻿interface:
   display_name: "Probability Model"
-  short_description: "Create probability models for random systems"
+  short_description: "Build probability models for game random systems"
   icon_small: "./assets/skill-icon.png"
   icon_large: "./assets/skill-logo.svg"
-  brand_color: "#3B82F6"
-  default_prompt: "Use -model to model drop rates, loot boxes, or random events."
+  brand_color: "#16A085"
+  default_prompt: "Use $probability-model to perform its core function."
 
 policy:
   allow_implicit_invocation: true
+
+

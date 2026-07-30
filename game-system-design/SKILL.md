@@ -1,55 +1,67 @@
 ---
 name: game-system-design
 description: >-
-  Design detailed game systems and subsystems (combat, economy, progression, social, etc.). Use when the user needs to define mechanics, balance parameters, player flows, and system interactions for a specific game feature. Outputs include system specification, core loops, feedback systems, and integration points.
+  Design a single game system or subsystem at a deliverable level. Use when the user says "design the X system", "create a system spec for X", "system design", "spec the combat/loot/progression/guild/matchmaking system". Outputs a system spec including objectives, player action verbs, data model, core algorithm pseudocode, integration points, edge cases, tuning knobs, quick-validation test plan, and dependency map.
 ---
 
 # Game System Design
 
-## Philosophy
+## Rules
 
-This skill follows a pragmatic, evidence-based approach to game system design. It emphasizes clarity, actionability, and integration with broader development workflows. Outputs are designed to be directly usable by designers, developers, and producers without further interpretation.
+1. Always assign a design pattern label before describing the solution (FSM, observer, event queue, lazy eval, etc.).
+2. Always include a 1-hour MVP test that validates the core concept before building.
+3. Every tuning parameter bounded: min / default / max. Zero unbounded values.
+4. One system = one document. If the user mentions multiple systems, list and confirm ordering with them.
 
-## Core Workflow
+## Workflow
 
-1. **Input Gathering** – Collect any existing constraints, references, or goals from the user.
-2. **Domain Analysis** – Break down the request into fundamental components and systems.
-3. **Structured Design** – Apply established frameworks and patterns specific to game system design.
-4. **Output Synthesis** – Produce well-formatted deliverables that match industry standards.
-5. **Validation Check** – Ensure internal consistency and readiness for implementation.
+### 1. System Problem Scene
 
-## Detailed Guidance
+- What player behavior or loop drives this system?
+- What specific problem does it solve?
+- Who is the primary persona?
+- Budget constraints: time, art, server, network.
 
-- **Input expectations**: Accepts bullet points, rough ideas, or existing documents. Asks clarifying questions if scope is ambiguous.
-- **Step-by-step procedures**: Follows the workflow above, emitting structured Markdown by default.
-- **Decision points**: Adapts depth based on project scale (indie vs AAA) and user role (designer vs programmer).
-- **Quality criteria**: Outputs are specific, measurable, unambiguous, and aligned with stated goals.
-- **Common pitfalls**: Avoids vague language, over-specification prematurely, and ignoring technical constraints.
+### 2. Architectural Pattern Selection
+
+Require the pattern label explicitly:
+
+- **State machine** for progression / achievement / quest state.
+- **Observer/Callback** for any UI-model inversion.
+- **ECS layout** for tunable runtime component data.
+- **Lazy evaluation** for bough/debuff stacking.
+- **Round-Robin / Time-slice** for discrete simulation steps.
+
+### 3. Detailed Spec Blueprint
+
+| Section | Description |
+|---|---|
+| **Data Model** | Entities, attributes, relationships, raw structures |
+| **Core Algorithm** | Pseudo-code walkthrough (step-by-step) |
+| **Interface/API** | Entry points and mutation points for other systems |
+| **Edge Cases** | empty initial, full-capacity, single-player, first-login, error recovery |
+| **Tuning Knobs** | Table: name - min - optimum - max |
+| **Feature Guard & Backout** | how to enable/disable at runtime; backout if broken |
+
+### 4. Release Validation Checklist
+
+- Test flag name & default state
+- Silent deploy sequence
+- Monitor metrics for rapid close indicator
+- 1-hour smoke test:
+  - one unit test for core algorithm edge
+  - one state machine transition test
+  - one integration test with "no-op" inputs
 
 ## Output Format
 
-Primarily outputs structured Markdown with clear headings, tables, and lists. Can also produce:
-- CSV/Excel tables (via data-table-generator sub-skill)
-- Diagrams described in Mermaid syntax
-- JSON schemas for data structures
-- Pseudocode or language-agnostic logic specs
+- System spec table (as above)
+- Mermaid state/flow diagram
+- Wilderness pseudo-code snippet (single method)
+- Dependency manifest (what this system needs before first deploy)
 
-When appropriate, the skill will suggest using companion skills (e.g., data-table-generator for numbers, level-design for maps) and invoke them.
+## Common Pitfalls
 
-## Resources (optional)
-
-### scripts/
-- generate_gdd.py – Helper script to convert structured data into full GDD Markdown.
-- balance_calc.py – Probability and expected value calculator for game systems.
-- level_template.py – Procedural level layout generator based on parameters.
-
-### references/
-- gdd_structure.md – Canonical outline of a professional GDD.
-- system_design_patterns.md – Common architectural patterns in game systems.
-- monetization_models.csv – Reference table of f2p, premium, and hybrid models.
-
-### assets/
-- gdd_template.docx – Optional Word template for teams requiring DOCX.
-- icon_set/ – Simple PNG icons for Milestones, Systems, Features.
-
----
+- Over-design for scale before existence proof of concept.
+- No null/probability path handling → system fails in empty initial state.
+- Interfacing via string-based conventions → compile-time interface contracts are safer.

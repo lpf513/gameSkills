@@ -1,10 +1,12 @@
-interface:
+﻿interface:
   display_name: "Narrative Design"
   short_description: "Craft game stories and characters"
   icon_small: "./assets/skill-icon.png"
   icon_large: "./assets/skill-logo.svg"
-  brand_color: "#3B82F6"
-  default_prompt: "Use -design to develop a games plot, characters, and dialogue."
+  brand_color: "#9B59B6"
+  default_prompt: "Use $narrative-design to perform its core function."
 
 policy:
   allow_implicit_invocation: true
+
+

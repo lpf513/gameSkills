@@ -1,10 +1,12 @@
-interface:
+﻿interface:
   display_name: "Game Feature Implementation"
-  short_description: "Implement game features from design"
+  short_description: "Implement features from design spec"
   icon_small: "./assets/skill-icon.png"
   icon_large: "./assets/skill-logo.svg"
-  brand_color: "#3B82F6"
-  default_prompt: "Use -feature-impl to implement a designed feature with code scaffolding."
+  brand_color: "#2980B9"
+  default_prompt: "Use $game-feature-impl to perform its core function."
 
 policy:
   allow_implicit_invocation: true
+
+

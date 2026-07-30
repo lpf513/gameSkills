@@ -1,10 +1,12 @@
-interface:
+﻿interface:
   display_name: "Game Design Document"
-  short_description: "Create professional GDDs"
+  short_description: "Professional GDD generation"
   icon_small: "./assets/skill-icon.png"
   icon_large: "./assets/skill-logo.svg"
-  brand_color: "#3B82F6"
-  default_prompt: "Use -design-doc to draft a comprehensive Game Design Document."
+  brand_color: "#E74C3C"
+  default_prompt: "Use $game-design-doc to perform its core function."
 
 policy:
   allow_implicit_invocation: true
+
+

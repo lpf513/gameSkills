@@ -1,55 +1,89 @@
----
+﻿---
 name: level-design
 description: >-
-  Create level designs including layout, pacing, difficulty curve, enemy placement, environmental storytelling, and player guidance. Use when the user wants to design a single level, map, or mission. Outputs can be textual descriptions, ASCII maps, or structured design documents.
+  Lay out a single level, dungeon, map, or mission. Use when the user says "design a level", "create level layout", "build dungeon map", "mission design", "encounter design", or requests a specific game space. Outputs room-by-room text description, optional ASCII grid map, pacing chart, encounter distribution table, and player guidance flow.
 ---
 
 # Level Design
 
-## Philosophy
+## Rules
 
-This skill follows a pragmatic, evidence-based approach to level design. It emphasizes clarity, actionability, and integration with broader development workflows. Outputs are designed to be directly usable by designers, developers, and producers without further interpretation.
+1. Every level teaches exactly ONE new mechanic. No buffet levels.
+2. Every level has one intended primary emotion (awe, tension, mastery, relief, etc.).
+3. Always produce a pacing chart: player intensity over space/time.
+4. Default to 3-act structure: Introduction -> Escalation -> Climax/Resolution.
+5. Environmental storytelling beats placement comes BEFORE encounter placement.
 
-## Core Workflow
+## Workflow
 
-1. **Input Gathering** – Collect any existing constraints, references, or goals from the user.
-2. **Domain Analysis** – Break down the request into fundamental components and systems.
-3. **Structured Design** – Apply established frameworks and patterns specific to level design.
-4. **Output Synthesis** – Produce well-formatted deliverables that match industry standards.
-5. **Validation Check** – Ensure internal consistency and readiness for implementation.
+### 1. Brief Collection
 
-## Detailed Guidance
+Ask:
+- Level theme / biome?
+- Time to complete?
+- Player power at level start / boss presence at end?
+- New mechanic to teach? Which one?
+- Intended emotion?
 
-- **Input expectations**: Accepts bullet points, rough ideas, or existing documents. Asks clarifying questions if scope is ambiguous.
-- **Step-by-step procedures**: Follows the workflow above, emitting structured Markdown by default.
-- **Decision points**: Adapts depth based on project scale (indie vs AAA) and user role (designer vs programmer).
-- **Quality criteria**: Outputs are specific, measurable, unambiguous, and aligned with stated goals.
-- **Common pitfalls**: Avoids vague language, over-specification prematurely, and ignoring technical constraints.
+### 2. Layout Skeleton
 
-## Output Format
+Produce an ASCII grid map with legend:
+```
+# = wall, . = floor, E = enemy, T = treasure, B = boss, S = start, X = exit, O = obstacle, ^ = hazard
+```
 
-Primarily outputs structured Markdown with clear headings, tables, and lists. Can also produce:
-- CSV/Excel tables (via data-table-generator sub-skill)
-- Diagrams described in Mermaid syntax
-- JSON schemas for data structures
-- Pseudocode or language-agnostic logic specs
+Size guideline: indent < 16x16 unless the user explicitly wants larger.
 
-When appropriate, the skill will suggest using companion skills (e.g., data-table-generator for numbers, level-design for maps) and invoke them.
+### 3. Pacing Chart
 
-## Resources (optional)
+| Area | Duration | Intensity (1-10) | Activity | Emotional peak |
+|---|---|---|---|---|
+| Zone A (learning) | ~X min | 3-4 | tutorial interaction | curiosity |
+| Zone B (escalation) | ~Y min | 6-8 | resource bite / threat up | tension |
+| Zone C (climax) | ~Z min | 9-10 | boss / major choice | mastery/relief |
 
-### scripts/
-- generate_gdd.py – Helper script to convert structured data into full GDD Markdown.
-- balance_calc.py – Probability and expected value calculator for game systems.
-- level_template.py – Procedural level layout generator based on parameters.
+### 4. Encounters and Loot
 
-### references/
-- gdd_structure.md – Canonical outline of a professional GDD.
-- system_design_patterns.md – Common architectural patterns in game systems.
-- monetization_models.csv – Reference table of f2p, premium, and hybrid models.
+| Room/Label | Type | Enemy(s) | HP/DPS | Loot | Ratio |
+|---|---|---|---|---|---|
+| S-01 | safe | none | - | tutorial lore | ... |
+| C-01 | combat | ... | ... | ... | ... |
+| C-02 | puzzle | ... | ... | ... | ... |
 
-### assets/
-- gdd_template.docx – Optional Word template for teams requiring DOCX.
-- icon_set/ – Simple PNG icons for Milestones, Systems, Features.
+### 5. Player Guidance
 
----
+- Breadcrumb trail: lighting, sound, NPC callout, environmental framing.
+- Coping when player returns: resource respawn? 1-time? difficulty shift?
+
+## Delivery Format
+
+- Section 1: Themed verbal description
+- Section 2: ASCII grid + legend
+- Section 3: Pacing table
+- Section 4: Encounters & loot table
+- Section 5: Guidance plan
+
+
+## Quality Checklist
+- [ ] Each level teaches exactly ONE new mechanic.
+- [ ] Clear primary emotion (awe, tension, mastery, relief, etc.) defined.
+- [ ] Pacing chart present with intensity over time/space.
+- [ ] Environmental storytelling placed before encounters.
+- [ ] Adequate negative space for readability.
+
+
+## Quality Checklist
+- [ ] Each level teaches exactly ONE new mechanic.
+- [ ] Clear primary emotion (awe, tension, mastery, relief, etc.) defined.
+- [ ] Pacing chart present with intensity over time/space.
+- [ ] Environmental storytelling placed before encounters.
+- [ ] Adequate negative space for readability.
+
+## Common Mistakes
+
+- Packing too many new systems into one level.
+- Boss fight at end without ramp preparation.
+- No negative space: over-decorated layout confuses path readability.
+
+
+

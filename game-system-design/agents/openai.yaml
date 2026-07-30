@@ -1,10 +1,12 @@
-interface:
+﻿interface:
   display_name: "Game System Design"
-  short_description: "Design game systems and mechanics"
+  short_description: "Design game systems precisely"
   icon_small: "./assets/skill-icon.png"
   icon_large: "./assets/skill-logo.svg"
-  brand_color: "#3B82F6"
-  default_prompt: "Use -system-design to design a specific game system like combat, economy, or progression."
+  brand_color: "#3498DB"
+  default_prompt: "Use $game-system-design to perform its core function."
 
 policy:
   allow_implicit_invocation: true
+
+

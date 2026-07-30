@@ -1,0 +1,89 @@
+# level-design
+Lay out a single level, dungeon, map, or mission. Use when the user says "design a level", "create level layout", "build dungeon map", "mission design", "encounter design", or requests a specific game space. Outputs room-by-room text description, optional ASCII grid map, pacing chart, encounter distribution table, and player guidance flow.
+
+﻿---
+name: level-design
+description: >-
+  Lay out a single level, dungeon, map, or mission. Use when the user says "design a level", "create level layout", "build dungeon map", "mission design", "encounter design", or requests a specific game space. Outputs room-by-room text description, optional ASCII grid map, pacing chart, encounter distribution table, and player guidance flow.
+---
+
+# Level Design
+
+## Rules
+
+1. Every level teaches exactly ONE new mechanic. No buffet levels.
+2. Every level has one intended primary emotion (awe, tension, mastery, relief, etc.).
+3. Always produce a pacing chart: player intensity over space/time.
+4. Default to 3-act structure: Introduction -> Escalation -> Climax/Resolution.
+5. Environmental storytelling beats placement comes BEFORE encounter placement.
+
+## Workflow
+
+### 1. Brief Collection
+
+Ask:
+- Level theme / biome?
+- Time to complete?
+- Player power at level start / boss presence at end?
+- New mechanic to teach? Which one?
+- Intended emotion?
+
+### 2. Layout Skeleton
+
+Produce an ASCII grid map with legend:
+```
+# = wall, . = floor, E = enemy, T = treasure, B = boss, S = start, X = exit, O = obstacle, ^ = hazard
+```
+
+Size guideline: indent < 16x16 unless the user explicitly wants larger.
+
+### 3. Pacing Chart
+
+| Area | Duration | Intensity (1-10) | Activity | Emotional peak |
+|---|---|---|---|---|
+| Zone A (learning) | ~X min | 3-4 | tutorial interaction | curiosity |
+| Zone B (escalation) | ~Y min | 6-8 | resource bite / threat up | tension |
+| Zone C (climax) | ~Z min | 9-10 | boss / major choice | mastery/relief |
+
+### 4. Encounters and Loot
+
+| Room/Label | Type | Enemy(s) | HP/DPS | Loot | Ratio |
+|---|---|---|---|---|---|
+| S-01 | safe | none | - | tutorial lore | ... |
+| C-01 | combat | ... | ... | ... | ... |
+| C-02 | puzzle | ... | ... | ... | ... |
+
+### 5. Player Guidance
+
+- Breadcrumb trail: lighting, sound, NPC callout, environmental framing.
+- Coping when player returns: resource respawn? 1-time? difficulty shift?
+
+## Delivery Format
+
+- Section 1: Themed verbal description
+- Section 2: ASCII grid + legend
+- Section 3: Pacing table
+- Section 4: Encounters & loot table
+- Section 5: Guidance plan
+
+
+## Quality Checklist
+- [ ] Each level teaches exactly ONE new mechanic.
+- [ ] Clear primary emotion (awe, tension, mastery, relief, etc.) defined.
+- [ ] Pacing chart present with intensity over time/space.
+- [ ] Environmental storytelling placed before encounters.
+- [ ] Adequate negative space for readability.
+
+
+## Quality Checklist
+- [ ] Each level teaches exactly ONE new mechanic.
+- [ ] Clear primary emotion (awe, tension, mastery, relief, etc.) defined.
+- [ ] Pacing chart present with intensity over time/space.
+- [ ] Environmental storytelling placed before encounters.
+- [ ] Adequate negative space for readability.
+
+## Common Mistakes
+
+- Packing too many new systems into one level.
+- Boss fight at end without ramp preparation.
+- No negative space: over-decorated layout confuses path readability.

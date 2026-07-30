@@ -1,0 +1,49 @@
+# Cursor rule for: probability-model
+# Build and analyze probability models for random game mechanics: loot drops, gacha pulls, critical hits, hit/miss, random events, procedural generation. Use when the user says "drop rate", "gacha probability", "loot table", "random chance system", "expected value calculation", "probability distribution", or "how to calculate fairness of random system". Outputs probability distributions, EV/variance tables, simulation results, and compliance-check against fairness standards.
+# Probability Model
+
+## Foundational Rules
+
+1. Always start with the exact random function being modeled: single draw? multiple draw? with/without replacement? do guarantee/badge/pity timer exist?
+2. For ANY RNG mechanism, compute: EV, Variance, P(success in N draws), cost per desired outcome percent.
+3. Pity timer is mandatory for rare rares: must specify "max draws before guaranteed drop".
+4. All modeling outputs must include confidence interval or extremal risk.
+
+## Gacha / Loot Box Modeling
+
+Standard formula set:
+
+- `P(get at least one R_rare in n draws) = 1 - (1 - p_R)^n`  [without pity]
+- `Expected draws to obtain rare = 1 / p_R` [without pity]
+- `With pity at K draws: P(success <= K) = 1; E[desired] = sum from i=1 to K-1 of (i * ...) + K * P(fail_all_before_K)`
+
+Psychological interpretation:
+- Miss risk within 50 draws = 1 - (1-p)^50
+- Cost for 80% confidence to obtain: rank of from individual plan
+
+## Workflow
+
+1. Identify the random mechanism precisely (synthesis table, pull step, drop tables, multiple bags model).
+2. Select analytic model: closed-form formula OR Monte Carlo simulation required (more than 2 sources of compounding RNG).
+3. Compute:
+   - EV(s) for key outcomes (profit, emotion, internal rate)
+   - Variance / stddev
+   - At least 3 confidence percentiles (P=25%, P=50%, P=95%)
+4. Pity analysis: without guarantee, what is P(gamer goes 200 draws with nothing)?
+5. Cost estimation: normal pay per pull, spiral for 95% confidence interval.
+6. Fairness check: V%Economic LTV vs cost; maximum loss for avg player monetization.
+
+## Output Format (always)
+
+- Probability distribution table (single/double-sided)
+- P(success over N draws table) for three profiles (F2P, average, whale)
+- Confidence intervals: 25%, 50%, 95%
+- Pity compensation analysis
+- Cost per 100% outcome calculation
+- Suggested rates ranges with rationale
+
+## Common Pitfalls
+
+- Ignoring replacement effects (loot table without replacement changes probabilities dramatically).
+- "Random is fine" without quantifying dry-run length; some players will always hit worst-case.
+- Using float round causing event to 100%+ or 0% due to accumulation bugs.

@@ -1,0 +1,88 @@
+# game-balance
+Skill for game-balance
+
+﻿## Core Cycles
+
+### Key Formulas Reference
+
+Always produce these standard references depending on system:
+
+**Combat Model:**
+- Effective Damage Per Second (EDPS) = (baseDMG * critMultiplier * hitRate) / attackInterval
+- Time To Kill (TTK) = target_HP / attacker_EDPS
+- EHP (Effective HP) = base_HP * (1 + armor / armor_scale) under armor mode
+
+**Progress Model:**
+- Cumulative XP from level a to b: sum(xp_per_level(i)) for i in [a, b)
+- Speed decrease: base_cost / level_base_cost (progressive ratio)
+
+**Random System:**
+- EV = sum(probability_i * reward_value_i)
+- Variance = sum(1/(prob_i)) per rare acquisition
+
+### Tuning Protocol
+
+When the player asks to tune a system:
+
+1. **Scope:** Capture number space: range of attributes, number of combos, benchmarks.
+2. **Model:** Build a mathematical model (formula or table).
+3. **Static Check:** Verify consistency at endpoints (min and max).
+4. **Tilt Adjustment:** Apply adjustment, then re-check across all billable combos.
+5. **Present:** Show 3 anchor points (low, typical, high) for immediate verification.
+6. **Monte Carlo (where random):** 10000 trial simulation sprinter for rare extremes.
+
+
+
+
+
+## Workflow
+1. **Scope:** Define attribute ranges, combos, benchmarks.
+2. **Model:** Build mathematical model (formula or lookup table).
+3. **Static Check:** Validate at min/max values.
+4. **Tilt Adjustment:** Apply adjustment, then re-check all combos.
+5. **Present:** Show low/typical/high anchor points.
+6. **Monte Carlo (if random):** Run 10k-sample simulation for extremes.
+ under armor mode
+
+**Progress Model:**
+- Cumulative XP from level a to b: sum(xp_per_level(i)) for i in [a, b)
+- Speed decrease: base_cost / level_base_cost (progressive ratio)
+
+**Random System:**
+- EV = sum(probability_i * reward_value_i)
+- Variance = sum(1/(prob_i)) per rare acquisition
+
+### Tuning Protocol
+
+When the player asks to tune a system:
+
+1. **Scope:** Capture number space: range of attributes, number of combos, benchmarks.
+2. **Model:** Build a mathematical model (formula or table).
+3. **Static Check:** Verify consistency at endpoints (min and max).
+4. **Tilt Adjustment:** Apply adjustment, then re-check across all billable combos.
+5. **Present:** Show 3 anchor points (low, typical, high) for immediate verification.
+6. **Monte Carlo (where random):** 10000 trial simulation sprinter for rare extremes.
+
+
+
+
+## Deliverable Format## Deliverable Format## Deliverable Format
+
+- **Formulas specification** as markdown table with variable definitions.
+- **Anchor data** for 3 reference levels (early, mid, late).
+- **Simulation result** (optional): 2-3 percentile data from simulation.
+- **Red flag list**: where tuning collapses (e.g., one-shot kills possible).
+
+## Anti-Enplay Checklist
+
+- [ ] TTK checked across all gear combinations.
+- [ ] drifting global multiplier caught and isolated.
+- [ ] Scale breakers (high values) verified as still bounded.
+- [ ] No low-level enemy stronger than mid-level due to modular sensitivity.
+- [ ] Tangential imbalance (infinite combo / stun lock) flagged.
+
+## Common Pitfalls
+
+- "Just increase HP 20%" 鈥?without checking if that causes grind instead of challenge.
+- Adjusting single values in multi-factor model leaks elsewhere: always verify across the whole matrix.
+- "Joke open" weak enemies at high level imbalance when scaled differently.

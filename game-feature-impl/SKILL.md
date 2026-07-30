@@ -1,55 +1,75 @@
 ---
 name: game-feature-impl
 description: >-
-  Transform game design documents into implementation plans with code scaffolding, pseudocode, and technical specifications. Use when the user has a design ready and needs to build it. Outputs include feature breakdown, implementation steps, API contracts, and code templates.
+  Transform game design documents or system specs into implementation plans with precise code scaffolding / pseudocode and technical specifications. Use when the user has a design ready and says "implement this feature", "build this system", "code this from the design", "write implementation plan for X". Outputs include feature breakdown, implementation steps with task estimates, API contracts / interface design, code templates, and testing checklist.
 ---
 
 # Game Feature Implementation
 
-## Philosophy
+## Rules
 
-This skill follows a pragmatic, evidence-based approach to game feature impl. It emphasizes clarity, actionability, and integration with broader development workflows. Outputs are designed to be directly usable by designers, developers, and producers without further interpretation.
+1. Always derive from the design document, not from secondary inference. Every implementation step must map back to a design specification.
+2. Each task must be estimable (quantifiable: hours, story points, or task count). No open-ended "write the engine" tasks.
+3. Unit test positions must be named before the code exists. Test-first reduces whiplash.
 
-## Core Workflow
+## Workflow
 
-1. **Input Gathering** – Collect any existing constraints, references, or goals from the user.
-2. **Domain Analysis** – Break down the request into fundamental components and systems.
-3. **Structured Design** – Apply established frameworks and patterns specific to game feature impl.
-4. **Output Synthesis** – Produce well-formatted deliverables that match industry standards.
-5. **Validation Check** – Ensure internal consistency and readiness for implementation.
+### 1. Design Reconciliation
 
-## Detailed Guidance
+Ask the user to provide the design document (or reference the design section). If none exists, strongly recommend using the game-system-design skill first.
 
-- **Input expectations**: Accepts bullet points, rough ideas, or existing documents. Asks clarifying questions if scope is ambiguous.
-- **Step-by-step procedures**: Follows the workflow above, emitting structured Markdown by default.
-- **Decision points**: Adapts depth based on project scale (indie vs AAA) and user role (designer vs programmer).
-- **Quality criteria**: Outputs are specific, measurable, unambiguous, and aligned with stated goals.
-- **Common pitfalls**: Avoids vague language, over-specification prematurely, and ignoring technical constraints.
+Validate:
+- Are the acceptance criteria testable?
+- Is the data model complete with field types?
+- Are integration points (dependency inversion) clearly defined?
+
+### 2. Feature Breakdown
+
+| Task | XP (story points) | Dependencies | Language/Layer | Test Position |
+| --- | --- | --- | --- | --- |
+| T1: Define data structure | 1 | none | data model | Unit(T)
+| T2: Core logic | 2 | T1 | logic/AI/BT | Unit(T)
+| T3: API/Event interface | 1 | T1 | interface layer | Integration(T)
+
+### 3. Code Scaffolding
+
+Produce:
+- Interface / abstract class skeleton (pseudocode)
+- Core method signature with input/output type annotations
+- Fake stub to support parallel development
+
+### 4. API Contract Design
+
+For any system accessed by other systems:
+- Synchronous vs asynchronous intent (data-only vs heavy-task)
+- Re-entrant capability: can or welcome?
+- Context/registry dependency injection point
+
+### 5. Build Queue for Prototype
+
+- Step 1: Data model load test (boot-up loading)
+- Step 2: Apply dirty propagation check in system-in-silent mode
+- Step 3: Brokers connections (event pipe through)
+
+### 6. Code Scaffolding Delivery
+
+- Provide minimal runnable skeleton:
+  - Main loop entry point(s) defined clearly
+  - Manifest / include / import declarations
+
+### 7. Test Locations
+
+Table: test file name | category (unit / integration / smoke / memory) | input | expected output | failure mode
 
 ## Output Format
 
-Primarily outputs structured Markdown with clear headings, tables, and lists. Can also produce:
-- CSV/Excel tables (via data-table-generator sub-skill)
-- Diagrams described in Mermaid syntax
-- JSON schemas for data structures
-- Pseudocode or language-agnostic logic specs
+- Programmer's technical checklist (main deliverable)
+- Class / data model listing
+- API contract (input type, output, precondition, mock)
+- Tests detail list
 
-When appropriate, the skill will suggest using companion skills (e.g., data-table-generator for numbers, level-design for maps) and invoke them.
+## Common Pitfalls
 
-## Resources (optional)
-
-### scripts/
-- generate_gdd.py – Helper script to convert structured data into full GDD Markdown.
-- balance_calc.py – Probability and expected value calculator for game systems.
-- level_template.py – Procedural level layout generator based on parameters.
-
-### references/
-- gdd_structure.md – Canonical outline of a professional GDD.
-- system_design_patterns.md – Common architectural patterns in game systems.
-- monetization_models.csv – Reference table of f2p, premium, and hybrid models.
-
-### assets/
-- gdd_template.docx – Optional Word template for teams requiring DOCX.
-- icon_set/ – Simple PNG icons for Milestones, Systems, Features.
-
----
+- "Implement autosave" with no data version doctrine leads to fragile build-save cycle.
+- Dependency slice where no Itax interface breaks compile-time.
+- Not confirming the design is frozen. Small design changes cascade into churn.

@@ -1,0 +1,97 @@
+---
+name: game-design-doc
+description: >-
+  Generate a complete Game Design Document (GDD). Use when the user says "write a GDD", "game design document", "design document", "game concept", "pitch document", or describes a game idea needing formal design. Covers vision, pillars, core loop, system interaction matrix, feature backlog with priorities, player personas, monetization, and risk analysis. Works for AAA, indie, mobile, tabletop, and all genres.
+---
+
+# Game Design Document (GDD)
+
+## Core Knowledge
+
+A GDD is a blueprint from which every discipline reads. Rules:
+
+- No undefined adjectives. Must be measurable (e.g., "fast" -> "TTK <= 2.5s").
+- No feature without acceptance criteria. Minimum 3 per feature.
+- Every system appears in the interaction matrix.
+- Every content quantity pinned to a budget constraint.
+
+## Workflow
+
+### 1. Scope Clarification
+
+Ask before writing:
+1. Genre (pure/hybrid)?
+2. Target platform(s)?
+3. Team size/roles?
+4. Existing constraints?
+5. Single doc or multi-spec?
+
+### 2. Executive Block
+
+**Elevator Pitch** - max 4 sentences: who, what, how different, platform.
+
+**Three Pillars** - exactly 3. Format each:
+```
+PILLAR N - "Label"
+- Player verb: ___
+- Key number: ___
+- Anti-guarantee: "THIS IS NOT about ___"
+```
+
+**Personas** - 2 types, defined by behavior (session style, monetization tolerance).
+
+### 3. Core Loop (table + Mermaid)
+
+| Level | Duration | Activities | Reward | Fail State |
+|---|---|---|---|---|
+| Inner | 10-30s | moment-to-moment | feedback | ___ |
+| Middle | 5-15min | objective cycle | progress | ___ |
+| Outer | days-weeks | meta-progression | permanence | ___ |
+
+### 4. System Interaction Matrix
+
+Cells: `strong`, `weak`, `none`. Describe coupling mechanism for each non-none.
+
+### 5. Feature Backlog
+
+| Feature | Priority (P0/P1/P2) | Est. Cost | AC Count | Depends On | Owner |
+
+Rule: "Depends On" references a row above. Zero forward-loops.
+
+### 6. Monetization Sketch
+
+- Revenue model (premium/fimp/subscription/hybrid)
+- Conversion currencies
+- NEVER-sold list (mandatory)
+
+### 7. Risk Register
+
+| Risk | Probability | Impact | Mitigation | Signal |
+Min: 1 tech + 1 business + 1 design.
+
+### 8. Content Skeleton
+
+| Category | Quantity | Spec/Budget |
+|---|---|---|
+| Characters | ... | ... |
+| Enemies | ... | ... |
+| Levels | ... | ... |
+| Quests | ... | ... |
+| Cosmetics | ... | ... |
+| Localization | ... | ... |
+
+## Quality Checklist
+
+- [ ] Every pillar: concrete player verb + key number
+- [ ] Core loop: fail-state per tier
+- [ ] Feature backlog: zero implicit dependencies
+- [ ] No fog-word without measurable definition
+- [ ] Monetization: NEVER-sold category present
+- [ ] Risk: 1 tech + 1 business + 1 design minimum
+- [ ] Content table: bounded quantities
+
+## Common Mistakes
+
+- Skipping matrix -> integration breakage late
+- Without numbers -> not a technical GDD, just a vision pitch
+- Over-specify before cheapest validation

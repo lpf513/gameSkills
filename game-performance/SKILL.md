@@ -1,55 +1,74 @@
 ---
 name: game-performance
 description: >-
-  Analyze and optimize game performance including CPU/GPU usage, memory management, draw calls, and frame rate. Use when the user experiences performance issues or wants to ensure smooth gameplay. Outputs include profiling guides, optimization techniques, and performance budgets.
+  Analyze and optimize game performance including CPU/GPU profiling, memory management, draw calls, frame rate, and loading times. Use when the user experiences performance issues ("game is lagging", "fps drops", "memory leak", "loading too slow", "profiling results analysis", "what is causing frame spike"), or wants to establish performance budgets for production.
 ---
 
 # Game Performance Optimization
 
-## Philosophy
+## Rules
 
-This skill follows a pragmatic, evidence-based approach to game performance. It emphasizes clarity, actionability, and integration with broader development workflows. Outputs are designed to be directly usable by designers, developers, and producers without further interpretation.
+1. Always profile before optimizing. Any suggestion without profiling data is premature optimization.
+2. State bound targets before stating causes: target frame budget (16ms for 60fps), draw call budget, memory cap, load-time ceiling.
+3. Output at least one concrete code change suggestion (pseudocode or real) even for "general" optimization requests.
+4. The primary cost of performanced analysis is not being perfect but being **profile-first** and **measure-shift-measure**.
 
-## Core Workflow
+## Workflow
 
-1. **Input Gathering** – Collect any existing constraints, references, or goals from the user.
-2. **Domain Analysis** – Break down the request into fundamental components and systems.
-3. **Structured Design** – Apply established frameworks and patterns specific to game performance.
-4. **Output Synthesis** – Produce well-formatted deliverables that match industry standards.
-5. **Validation Check** – Ensure internal consistency and readiness for implementation.
+## Diagnostic Workflow
 
-## Detailed Guidance
+### 1. Symptom Classification
 
-- **Input expectations**: Accepts bullet points, rough ideas, or existing documents. Asks clarifying questions if scope is ambiguous.
-- **Step-by-step procedures**: Follows the workflow above, emitting structured Markdown by default.
-- **Decision points**: Adapts depth based on project scale (indie vs AAA) and user role (designer vs programmer).
-- **Quality criteria**: Outputs are specific, measurable, unambiguous, and aligned with stated goals.
-- **Common pitfalls**: Avoids vague language, over-specification prematurely, and ignoring technical constraints.
+- Low FPS? Explicitly note current FPS vs target.
+- Stutter / frame-time spiking? Investigate GC / allocation spikes.
+- Memory leak? Check monotonic memory increase over time.
+- Battery/thermal throttle? On mobile, look at core frequency over time.
+
+### 2. CPU Analysis Path
+
+Draw call focused? → Batch check: static+ dynamic, GPU instancing.  Skinned mesh renderer count, bones per model, Shadow cascade triggering.
+
+Entity computing: ?
+- Throttle per tick entities
+- Verify update order (fixed update / update / late update) not interleaved incorrectly
+- Check empty transform updates (dirty flag missing)
+- Check LOD (game id based vs model based)
+
+Physics: collisions count per frame, In hierarchy, disable unused colliders.
+
+### 3. GPU Analysis Path
+
+Common bottlenecks:
+- Overdraw (many transparent layers) → verify Z-test Order-check
+- Shadow Pass count especially for realtime multiple lights (switch to  baked maps)
+- Decals volume → per-pixel lighting cost increments
+
+Optimization: use GPU profiler from engine frame author or Radeon GPU Profiler; record 1 frame capture.
+
+### 4. Memory Analysis
+
+- Allocation profile (where/when)
+- Search for unnecessary copies (string, byte serialization)
+- Pooling check: particle system, projectile, objects with frequencies that open/close many times
+- Asset id footprint tracker for per-type extreme attachments
+- Avoid GC Pending. Prealloc pool, not garbage, for time-critical loops.
+
+### 5. Loading Time Analysis
+
+- What assets load and how? Sync or async.
+- Stream/background loading? Find dependencies out of order.
+- Spike-removal: shifting loads to next frame if no rendering needed.
+
+### Diagnostic Framework
 
 ## Output Format
 
-Primarily outputs structured Markdown with clear headings, tables, and lists. Can also produce:
-- CSV/Excel tables (via data-table-generator sub-skill)
-- Diagrams described in Mermaid syntax
-- JSON schemas for data structures
-- Pseudocode or language-agnostic logic specs
+- Main deliverable: issue-classification with root cause hypothesis (required)
+- Then recommended code change in pseudocode or language form
+- Performance budget tables (CPU ms, memory MB, draw calls, load secs)
+- Change-measure loop: repeat test before/after
 
-When appropriate, the skill will suggest using companion skills (e.g., data-table-generator for numbers, level-design for maps) and invoke them.
+## Common Pitfalls
 
-## Resources (optional)
-
-### scripts/
-- generate_gdd.py – Helper script to convert structured data into full GDD Markdown.
-- balance_calc.py – Probability and expected value calculator for game systems.
-- level_template.py – Procedural level layout generator based on parameters.
-
-### references/
-- gdd_structure.md – Canonical outline of a professional GDD.
-- system_design_patterns.md – Common architectural patterns in game systems.
-- monetization_models.csv – Reference table of f2p, premium, and hybrid models.
-
-### assets/
-- gdd_template.docx – Optional Word template for teams requiring DOCX.
-- icon_set/ – Simple PNG icons for Milestones, Systems, Features.
-
----
+- "Make renderer faster" is generic and useless. Always blame specific pass.
+- Missing isolating root cause profiling. If you cannot reproduce slowdown with clean playground, you cannot prove to thrust speed.

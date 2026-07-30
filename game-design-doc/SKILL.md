@@ -1,55 +1,105 @@
 ---
 name: game-design-doc
 description: >-
-  Generate comprehensive, professional Game Design Documents (GDD). Use when the user wants to create a full GDD, write a design brief, draft a game concept or pitch document, document core mechanics and gameplay loops, or outline a games vision, pillars, and feature set. Covers structure from high-level concept through detailed system interaction matrices - suitable for AAA, indie, mobile, and tabletop projects alike.
+  Generate a complete Game Design Document (GDD). Use when the user says "write a GDD", "game design document", "design document", "game concept", "pitch document", or describes a game idea needing formal design. Covers vision, pillars, core loop, system interaction matrix, feature backlog with priorities, player personas, monetization, and risk analysis. Works for AAA, indie, mobile, tabletop, and all genres.
 ---
 
-# Game Design Document
+# Game Design Document (GDD)
 
-## Philosophy
+## Core Knowledge
 
-This skill follows a pragmatic, evidence-based approach to game design doc. It emphasizes clarity, actionability, and integration with broader development workflows. Outputs are designed to be directly usable by designers, developers, and producers without further interpretation.
+A GDD is a blueprint from which every discipline reads. Rules:
 
-## Core Workflow
+- No undefined adjectives. Must be measurable (e.g., "fast" -> "TTK <= 2.5s").
+- No feature without acceptance criteria. Minimum 3 per feature.
+- Every system appears in the interaction matrix.
+- Every content quantity pinned to a budget constraint.
 
-1. **Input Gathering** – Collect any existing constraints, references, or goals from the user.
-2. **Domain Analysis** – Break down the request into fundamental components and systems.
-3. **Structured Design** – Apply established frameworks and patterns specific to game design doc.
-4. **Output Synthesis** – Produce well-formatted deliverables that match industry standards.
-5. **Validation Check** – Ensure internal consistency and readiness for implementation.
+## Workflow
 
-## Detailed Guidance
+### 1. Scope Clarification
 
-- **Input expectations**: Accepts bullet points, rough ideas, or existing documents. Asks clarifying questions if scope is ambiguous.
-- **Step-by-step procedures**: Follows the workflow above, emitting structured Markdown by default.
-- **Decision points**: Adapts depth based on project scale (indie vs AAA) and user role (designer vs programmer).
-- **Quality criteria**: Outputs are specific, measurable, unambiguous, and aligned with stated goals.
-- **Common pitfalls**: Avoids vague language, over-specification prematurely, and ignoring technical constraints.
+Ask before writing:
+1. Genre (pure/hybrid)?
+2. Target platform(s)?
+3. Team size/roles?
+4. Existing constraints?
+5. Single doc or multi-spec?
+
+### 2. Executive Block
+
+**Elevator Pitch** - max 4 sentences: who, what, how different, platform.
+
+**Three Pillars** - exactly 3. Format each:
+```
+PILLAR N - "Label"
+- Player verb: ___
+- Key number: ___
+- Anti-guarantee: "THIS IS NOT about ___"
+```
+
+**Personas** - 2 types, defined by behavior (session style, monetization tolerance).
+
+### 3. Core Loop (table + Mermaid)
+
+| Level | Duration | Activities | Reward | Fail State |
+|---|---|---|---|---|
+| Inner | 10-30s | moment-to-moment | feedback | ___ |
+| Middle | 5-15min | objective cycle | progress | ___ |
+| Outer | days-weeks | meta-progression | permanence | ___ |
+
+### 4. System Interaction Matrix
+
+Cells: `strong`, `weak`, `none`. Describe coupling mechanism for each non-none.
+
+### 5. Feature Backlog
+
+| Feature | Priority (P0/P1/P2) | Est. Cost | AC Count | Depends On | Owner |
+
+Rule: "Depends On" references a row above. Zero forward-loops.
+
+### 6. Monetization Sketch
+
+- Revenue model (premium/fimp/subscription/hybrid)
+- Conversion currencies
+- NEVER-sold list (mandatory)
+
+### 7. Risk Register
+
+| Risk | Probability | Impact | Mitigation | Signal |
+Min: 1 tech + 1 business + 1 design.
+
+### 8. Content Skeleton
+
+| Category | Quantity | Spec/Budget |
+|---|---|---|
+| Characters | ... | ... |
+| Enemies | ... | ... |
+| Levels | ... | ... |
+| Quests | ... | ... |
+| Cosmetics | ... | ... |
+| Localization | ... | ... |
+
 
 ## Output Format
 
-Primarily outputs structured Markdown with clear headings, tables, and lists. Can also produce:
-- CSV/Excel tables (via data-table-generator sub-skill)
-- Diagrams described in Mermaid syntax
-- JSON schemas for data structures
-- Pseudocode or language-agnostic logic specs
+- Executive GDD sections as structured Markdown with all required tables
+- Mermaid diagrams for core loops
+- Feature Backlog as prioritized table
+- Risk Register with probability, impact, mitigation, and signal columns
+- Content Skeleton covering character, enemy, level, quest, localization quantity
+## Quality Checklist
 
-When appropriate, the skill will suggest using companion skills (e.g., data-table-generator for numbers, level-design for maps) and invoke them.
+- [ ] Every pillar: concrete player verb + key number
+- [ ] Core loop: fail-state per tier
+- [ ] Feature backlog: zero implicit dependencies
+- [ ] No fog-word without measurable definition
+- [ ] Monetization: NEVER-sold category present
+- [ ] Risk: 1 tech + 1 business + 1 design minimum
+- [ ] Content table: bounded quantities
 
-## Resources (optional)
+## Common Mistakes
 
-### scripts/
-- generate_gdd.py – Helper script to convert structured data into full GDD Markdown.
-- balance_calc.py – Probability and expected value calculator for game systems.
-- level_template.py – Procedural level layout generator based on parameters.
-
-### references/
-- gdd_structure.md – Canonical outline of a professional GDD.
-- system_design_patterns.md – Common architectural patterns in game systems.
-- monetization_models.csv – Reference table of f2p, premium, and hybrid models.
-
-### assets/
-- gdd_template.docx – Optional Word template for teams requiring DOCX.
-- icon_set/ – Simple PNG icons for Milestones, Systems, Features.
-
----
+- Skipping matrix -> integration breakage late
+- Without numbers -> not a technical GDD, just a vision pitch
+- Over-specify before cheapest validation

@@ -1,0 +1,71 @@
+# Cursor rule for: game-feature-impl
+# Transform game design documents or system specs into implementation plans with precise code scaffolding / pseudocode and technical specifications. Use when the user has a design ready and says "implement this feature", "build this system", "code this from the design", "write implementation plan for X". Outputs include feature breakdown, implementation steps with task estimates, API contracts / interface design, code templates, and testing checklist.
+# Game Feature Implementation
+
+## Rules
+
+1. Always derive from the design document, not from secondary inference. Every implementation step must map back to a design specification.
+2. Each task must be estimable (quantifiable: hours, story points, or task count). No open-ended "write the engine" tasks.
+3. Unit test positions must be named before the code exists. Test-first reduces whiplash.
+
+## Workflow
+
+### 1. Design Reconciliation
+
+Ask the user to provide the design document (or reference the design section). If none exists, strongly recommend using the game-system-design skill first.
+
+Validate:
+- Are the acceptance criteria testable?
+- Is the data model complete with field types?
+- Are integration points (dependency inversion) clearly defined?
+
+### 2. Feature Breakdown
+
+| Task | XP (story points) | Dependencies | Language/Layer | Test Position |
+| --- | --- | --- | --- | --- |
+| T1: Define data structure | 1 | none | data model | Unit(T)
+| T2: Core logic | 2 | T1 | logic/AI/BT | Unit(T)
+| T3: API/Event interface | 1 | T1 | interface layer | Integration(T)
+
+### 3. Code Scaffolding
+
+Produce:
+- Interface / abstract class skeleton (pseudocode)
+- Core method signature with input/output type annotations
+- Fake stub to support parallel development
+
+### 4. API Contract Design
+
+For any system accessed by other systems:
+- Synchronous vs asynchronous intent (data-only vs heavy-task)
+- Re-entrant capability: can or welcome?
+- Context/registry dependency injection point
+
+### 5. Build Queue for Prototype
+
+- Step 1: Data model load test (boot-up loading)
+- Step 2: Apply dirty propagation check in system-in-silent mode
+- Step 3: Brokers connections (event pipe through)
+
+### 6. Code Scaffolding Delivery
+
+- Provide minimal runnable skeleton:
+  - Main loop entry point(s) defined clearly
+  - Manifest / include / import declarations
+
+### 7. Test Locations
+
+Table: test file name | category (unit / integration / smoke / memory) | input | expected output | failure mode
+
+## Output Format
+
+- Programmer's technical checklist (main deliverable)
+- Class / data model listing
+- API contract (input type, output, precondition, mock)
+- Tests detail list
+
+## Common Pitfalls
+
+- "Implement autosave" with no data version doctrine leads to fragile build-save cycle.
+- Dependency slice where no Itax interface breaks compile-time.
+- Not confirming the design is frozen. Small design changes cascade into churn.

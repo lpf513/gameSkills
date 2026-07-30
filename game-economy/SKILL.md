@@ -1,55 +1,64 @@
----
+﻿---
 name: game-economy
 description: >-
-  Design and analyze in-game economies including currency systems, resource acquisition/sinks, trading systems, and monetization strategies. Use when the user wants to create a sustainable economy, prevent inflation/deflation, or design fair monetization. Outputs include source/source charts, conversion rates, pricing models, and economic simulations.
+  Design and analyze in-game economies including currency systems, resource loops, trading systems, and monetization. Use when the user says "design in-game economy", "currency system", "inflation control", "soft/hard currency", "exchange system", "trade design", or "monetization strategy". Output includes source/sink diagrams, conversion rate tables, and sustainability analysis.
 ---
 
-# Game Economy
+# Game Economy Design
 
-## Philosophy
+## Foundational Rules
 
-This skill follows a pragmatic, evidence-based approach to game economy. It emphasizes clarity, actionability, and integration with broader development workflows. Outputs are designed to be directly usable by designers, developers, and producers without further interpretation.
+1. Every currency must have source AND sink. Source without sink = inflation. Sink without source = choking.
+2. The first dollar should NEVER provide a win over a free player of equal skill. Monetization = convenience + cosmetic + time-shifting.
+3. Always compute: ratio of top-spender-hourly-output to free-player-hourly-output. Max recommended: 30% (performance stand), 50% (casual), 80% (only PvE lock).
+4. Define all exchange rate explicitly in integer rational numbers, never floats! e.g. 3 soft:1 hard, not 2.998, not floating algorithm.
 
-## Core Workflow
+## Workflow
 
-1. **Input Gathering** – Collect any existing constraints, references, or goals from the user.
-2. **Domain Analysis** – Break down the request into fundamental components and systems.
-3. **Structured Design** – Apply established frameworks and patterns specific to game economy.
-4. **Output Synthesis** – Produce well-formatted deliverables that match industry standards.
-5. **Validation Check** – Ensure internal consistency and readiness for implementation.
+### 1. Define Currencies
 
-## Detailed Guidance
+| Name | Type (soft/hard/premium/guild) | Acq. Route | Sink Route | Daily Ceiling | Storage Cap |
 
-- **Input expectations**: Accepts bullet points, rough ideas, or existing documents. Asks clarifying questions if scope is ambiguous.
-- **Step-by-step procedures**: Follows the workflow above, emitting structured Markdown by default.
-- **Decision points**: Adapts depth based on project scale (indie vs AAA) and user role (designer vs programmer).
-- **Quality criteria**: Outputs are specific, measurable, unambiguous, and aligned with stated goals.
-- **Common pitfalls**: Avoids vague language, over-specification prematurely, and ignoring technical constraints.
+### 2. Source/Sink Chart
+
+Tables with monthly basis flows by player tier (FTP, Battlepass, Whale). Per person dollars.
+
+### 3. Conversion & Constraints
+
+- Rate table: hard -> soft etc.
+- Any auto-conversion timer or batch.
+- What happens if a player converts all of one currency to another in one day?
+
+### 4. Market Control
+
+If player-to-player market:
+- Bottom price = min_price (prevents crash)
+- Trade tax = sink_source_drain_rate
+- Blacklist items for trade (avoid gating)
+
+### 5. Sustainability Metrics
+
+- Consumer surplus loss = (optimum_utility_post_introduction - pre_intro_happy) / time
+- Raw wealth ratio: average F0P hourly earnings vs. income purchase for same farming
+- Flow rate metric: (daily_create - daily_consume) / daily_create.
 
 ## Output Format
 
-Primarily outputs structured Markdown with clear headings, tables, and lists. Can also produce:
-- CSV/Excel tables (via data-table-generator sub-skill)
-- Diagrams described in Mermaid syntax
-- JSON schemas for data structures
-- Pseudocode or language-agnostic logic specs
+- Currency definition table
+- Source/sink diagram (Mermaid or ASCII)
+- Conversion rate matrix
+- 7-day forecast with trend detection thresholds
+- Hot list (items likely to break economy)
 
-When appropriate, the skill will suggest using companion skills (e.g., data-table-generator for numbers, level-design for maps) and invoke them.
 
-## Resources (optional)
+### Additional Validation
 
-### scripts/
-- generate_gdd.py – Helper script to convert structured data into full GDD Markdown.
-- balance_calc.py – Probability and expected value calculator for game systems.
-- level_template.py – Procedural level layout generator based on parameters.
+- Review conversion ratios at the end of a 24-hour simulation for each player tier
+- Check that no single currency dominates sources without proportional sinks
+- Walk through the "first day" currency sequence numerically (how much earned, how much spent)
 
-### references/
-- gdd_structure.md – Canonical outline of a professional GDD.
-- system_design_patterns.md – Common architectural patterns in game systems.
-- monetization_models.csv – Reference table of f2p, premium, and hybrid models.
+## Common Pitfalls
 
-### assets/
-- gdd_template.docx – Optional Word template for teams requiring DOCX.
-- icon_set/ – Simple PNG icons for Milestones, Systems, Features.
+- Inflation from untapped sources: every daily-check should be monitored.
+- Unsupervised player trade leads to real-money black market inflation side-effects.
 
----

@@ -1,55 +1,82 @@
----
+﻿---
 name: data-table-generator
 description: >-
-  Generate structured data tables (CSV/Excel) for game content like items, enemies, abilities, and quests. Use when the user needs to create balanced numerical data for game systems. Outputs include ready-to-import data files with formulas, scaling curves, and variance controls.
+  Generate structured numerical data tables (CSV/Excel) for game content: items, enemies, abilities, quest rewards, crafting recipes. Use when the user says "generate data table", "item table", "enemy stat sheet", "XP curve table", "recipe table", or any bulk numerical content for game configuration. Outputs are import-ready with formulas, growth curves, and verified consistency.
 ---
 
 # Data Table Generator
 
-## Philosophy
+## Rules
 
-This skill follows a pragmatic, evidence-based approach to data table generator. It emphasizes clarity, actionability, and integration with broader development workflows. Outputs are designed to be directly usable by designers, developers, and producers without further interpretation.
+1. Always output as CSV or human-readable Markdown table, with a clear header row and column labels.
+2. Data columns must include: ID (unique), Name, and at least one stat column.
+3. Growth/level columns: provide the FORMULA in a comment line beneath the header: `# formula: base_stat * level^exponent`.
+4. Verify: total rows match expected count; columns align; no cell left blank unless explicitly described.
 
-## Core Workflow
+## Workflow
 
-1. **Input Gathering** – Collect any existing constraints, references, or goals from the user.
-2. **Domain Analysis** – Break down the request into fundamental components and systems.
-3. **Structured Design** – Apply established frameworks and patterns specific to data table generator.
-4. **Output Synthesis** – Produce well-formatted deliverables that match industry standards.
-5. **Validation Check** – Ensure internal consistency and readiness for implementation.
+### 1. Schema Definition (before any data)
 
-## Detailed Guidance
+Produce the column header row with types in parentheses:
 
-- **Input expectations**: Accepts bullet points, rough ideas, or existing documents. Asks clarifying questions if scope is ambiguous.
-- **Step-by-step procedures**: Follows the workflow above, emitting structured Markdown by default.
-- **Decision points**: Adapts depth based on project scale (indie vs AAA) and user role (designer vs programmer).
-- **Quality criteria**: Outputs are specific, measurable, unambiguous, and aligned with stated goals.
-- **Common pitfalls**: Avoids vague language, over-specification prematurely, and ignoring technical constraints.
+```
+ID | Name | Attack | HP | Speed | DropRate
+int| str  | int(1-999)| int(500-50000) | int | float(0-1)
+```
+
+### 2. Anchor Points
+
+Generate 3 reference rows (level 1, level mid, level max) first to verify formula and range with the user.
+
+### 3. Mass Generation + Validation
+
+- Check that all IDs are unique.
+- Scan for missing values (NULL detection).
+- Round to appropriate significant digits.
+
+### 4. Geometric/Formula Line
+
+Below the data, produce the empirical formula check:
+
+```
+Growth check: HP at max / HP at level 1 = 50; Attack at max / Attack at level 1 = 25
+```
+
+### 5. Delivery
+
+Toxic ones: offer to export as CSV string, XLSX through use of spreadsheet skill, or draw as a markdown table.
 
 ## Output Format
+- Surface: Markdown table with comment lines for others
+- Suggested clean: CSV dump in code block
 
-Primarily outputs structured Markdown with clear headings, tables, and lists. Can also produce:
-- CSV/Excel tables (via data-table-generator sub-skill)
-- Diagrams described in Mermaid syntax
-- JSON schemas for data structures
-- Pseudocode or language-agnostic logic specs
 
-When appropriate, the skill will suggest using companion skills (e.g., data-table-generator for numbers, level-design for maps) and invoke them.
+### Schema Validation (before delivery)
 
-## Resources (optional)
+- Verify every int column has no empty cells; replace ? with sentinel value 0.
+- Check formula consistency across rows: if HP = baseHP * level^1.2, validate 3 anchor rows.
+- Ensure unique IDs, sorted by ID.
 
-### scripts/
-- generate_gdd.py – Helper script to convert structured data into full GDD Markdown.
-- balance_calc.py – Probability and expected value calculator for game systems.
-- level_template.py – Procedural level layout generator based on parameters.
+### Export
 
-### references/
-- gdd_structure.md – Canonical outline of a professional GDD.
-- system_design_patterns.md – Common architectural patterns in game systems.
-- monetization_models.csv – Reference table of f2p, premium, and hybrid models.
+Default delivery as Markdown table with formula comments. Optionally export as CSV block or XLSX using spreadsheet skills.
 
-### assets/
-- gdd_template.docx – Optional Word template for teams requiring DOCX.
-- icon_set/ – Simple PNG icons for Milestones, Systems, Features.
+### Formula Template
 
----
+When generating growth curves, provide the formula in comment form:
+`
+# HP = base_hp * level^1.15
+# Attack = base_atk * level^0.95
+`
+Verify formula consistency: check value at level 1 and level max before mass generation.
+
+### Column Checklist
+
+- Is every column type defined? (int, float, string, and legal range)
+- Are derived columns verified? (total_price = base_price * level_factor)
+- Is the unique column present? (ID, not nullable)
+## Common Pitfalls
+- Forgetting to anchor the first and last row data for verification.
+- No formula line, so the user cannot independently verify intermediate data.
+- Missing null-check for gaps in auto-generated ranges.
+

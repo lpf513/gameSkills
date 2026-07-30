@@ -1,55 +1,87 @@
 ---
 name: game-dev-arch
 description: >-
-  Define technical architecture for game projects including engine selection, ECS vs OOP, networking model, rendering pipeline, and moddability. Use when the user needs to plan the technical foundation of a game. Outputs include architecture diagrams, technology decisions, and integration guidelines.
+  Define technical architecture for game projects: engine selection, rendering pipeline, ECS vs OOP, networking model, threading model, asset pipeline, platform release strategy. Use when the user wants to plan the technical foundation of a game, evaluate engine tradeoffs, or prepare a technical design document.
 ---
 
 # Game Development Architecture
 
-## Philosophy
+## Rules
 
-This skill follows a pragmatic, evidence-based approach to game dev arch. It emphasizes clarity, actionability, and integration with broader development workflows. Outputs are designed to be directly usable by designers, developers, and producers without further interpretation.
+1. Frame budget and memory budget define everything. State them first.
+2. Platform constraints determine architecture: GPU tier, install size, threading limits.
+3. Every subsystem declares its thread: main thread, worker pool, GPU, or RPC.
+4. Entity model must be explicitly chosen: ECS (for cache locality, high entity count) or OOP (familiarity, editor support). Provide a 1-sentence justification.
 
-## Core Workflow
+## Workflow
 
-1. **Input Gathering** – Collect any existing constraints, references, or goals from the user.
-2. **Domain Analysis** – Break down the request into fundamental components and systems.
-3. **Structured Design** – Apply established frameworks and patterns specific to game dev arch.
-4. **Output Synthesis** – Produce well-formatted deliverables that match industry standards.
-5. **Validation Check** – Ensure internal consistency and readiness for implementation.
+### 1. Scope Questionnaire
 
-## Detailed Guidance
+Ask the user (if not given):
+- Target FPS and frame budget (60fps = 16ms per frame)?
+- Platform(s)?
+- Engine candidate(s)?
+- Max simultaneous entities (players, enemies, projectiles, objects)?
+- Network model (single-player, cooperative, dedicated server, P2P)?
+- Modding support needed?
 
-- **Input expectations**: Accepts bullet points, rough ideas, or existing documents. Asks clarifying questions if scope is ambiguous.
-- **Step-by-step procedures**: Follows the workflow above, emitting structured Markdown by default.
-- **Decision points**: Adapts depth based on project scale (indie vs AAA) and user role (designer vs programmer).
-- **Quality criteria**: Outputs are specific, measurable, unambiguous, and aligned with stated goals.
-- **Common pitfalls**: Avoids vague language, over-specification prematurely, and ignoring technical constraints.
+### 2. Core Architecture Decision Matrix
+
+| Domain | Options | Decision | Justification |
+|---|---|---|---|
+| Engine | Unreal / Unity / Godot / custom | ... | team skill, target quality, platform support |
+| Render | forward / deferred / hybrid | ... | transparency needs, light counts, dynamic light |
+| Physics | built-in / dedicated / simplified | ... | body count, CCD needs |
+| Network | authoritative / P2P / hybrid | ... | competitive vs casual, cheating tolerance |
+| Asset Load | sync / async / streaming | ... | memory target, world size, open-world / linear |
+| Scripting | Lua / C# / blueprint / none | ... | designer exposure, scope of scripting |
+
+### 3. System Architecture
+
+Provide Mermaid-like text diagram showing:
+- Input stack
+- Game logic tick loop
+- Rendering queue
+- Audio pipeline
+- UI controller
+- Asset manager
+
+### 4. Threading Model
+
+| Subsystem | Thread | Communication |
+|---|---|---|
+| Input | Main thread | event queue |
+| Physics | worker pool | FIFO batch |
+| Audio | dedicated thread | message bus |
+| Render | Main thread + GPU | GPU buffer |
+
+### 5. Asset and Content Pipeline
+
+- Source asset -> Intermediate format -> Runtime format flow
+- Bundle size target per platform
+- Hot-module swap: editor-only or production?
+
+### 6. Network Architecture
+
+- Network topology
+- Tick rate and reconciliation method
+- Peak bandwidth per player estimate
+
+### 7. Build and Delivery
+
+- Per-platform tooling
+- CI pipeline overview
+- Crash / error reporting stack outline
 
 ## Output Format
 
-Primarily outputs structured Markdown with clear headings, tables, and lists. Can also produce:
-- CSV/Excel tables (via data-table-generator sub-skill)
-- Diagrams described in Mermaid syntax
-- JSON schemas for data structures
-- Pseudocode or language-agnostic logic specs
+- Technology decision matrix (table)
+- Mermaid architecture diagram
+- Per-subsystem requirements table
+- Asset pipeline flow-sheet
 
-When appropriate, the skill will suggest using companion skills (e.g., data-table-generator for numbers, level-design for maps) and invoke them.
+## Common Pitfalls
 
-## Resources (optional)
-
-### scripts/
-- generate_gdd.py – Helper script to convert structured data into full GDD Markdown.
-- balance_calc.py – Probability and expected value calculator for game systems.
-- level_template.py – Procedural level layout generator based on parameters.
-
-### references/
-- gdd_structure.md – Canonical outline of a professional GDD.
-- system_design_patterns.md – Common architectural patterns in game systems.
-- monetization_models.csv – Reference table of f2p, premium, and hybrid models.
-
-### assets/
-- gdd_template.docx – Optional Word template for teams requiring DOCX.
-- icon_set/ – Simple PNG icons for Milestones, Systems, Features.
-
----
+- Engine choice based on trailers rather than team competence.
+- Memory cap unspecified until tail end of production leads to restructure.
+- Over-engineering for speculative scale rather than validated requirements.

@@ -1,10 +1,12 @@
-interface:
+﻿interface:
   display_name: "Level Design"
-  short_description: "Design game levels and maps"
+  short_description: "Design levels and encounter spaces"
   icon_small: "./assets/skill-icon.png"
   icon_large: "./assets/skill-logo.svg"
-  brand_color: "#3B82F6"
-  default_prompt: "Use -design to outline a game levels layout, pacing, and challenges."
+  brand_color: "#2ECC71"
+  default_prompt: "Use $level-design to perform its core function."
 
 policy:
   allow_implicit_invocation: true
+
+

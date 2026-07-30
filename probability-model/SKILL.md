@@ -1,55 +1,61 @@
 ---
 name: probability-model
 description: >-
-  Build probability models for loot drops, gacha systems, critical hits, and other random mechanics. Use when the user needs to calculate expected values, variance, or fairness of random systems. Outputs include probability distributions, expected value calculations, and simulation scripts.
+  Build and analyze probability models for random game mechanics: loot drops, gacha pulls, critical hits, hit/miss, random events, procedural generation. Use when the user says "drop rate", "gacha probability", "loot table", "random chance system", "expected value calculation", "probability distribution", or "how to calculate fairness of random system". Outputs probability distributions, EV/variance tables, simulation results, and compliance-check against fairness standards.
 ---
 
 # Probability Model
 
-## Philosophy
+## Foundational Rules
 
-This skill follows a pragmatic, evidence-based approach to probability model. It emphasizes clarity, actionability, and integration with broader development workflows. Outputs are designed to be directly usable by designers, developers, and producers without further interpretation.
+1. Always start with the exact random function being modeled: single draw? multiple draw? with/without replacement? do guarantee/badge/pity timer exist?
+2. For ANY RNG mechanism, compute: EV, Variance, P(success in N draws), cost per desired outcome percent.
+3. Pity timer is mandatory for rare rares: must specify "max draws before guaranteed drop".
+4. All modeling outputs must include confidence interval or extremal risk.
 
-## Core Workflow
+## Gacha / Loot Box Modeling
 
-1. **Input Gathering** – Collect any existing constraints, references, or goals from the user.
-2. **Domain Analysis** – Break down the request into fundamental components and systems.
-3. **Structured Design** – Apply established frameworks and patterns specific to probability model.
-4. **Output Synthesis** – Produce well-formatted deliverables that match industry standards.
-5. **Validation Check** – Ensure internal consistency and readiness for implementation.
+Standard formula set:
 
-## Detailed Guidance
+- `P(get at least one R_rare in n draws) = 1 - (1 - p_R)^n`  [without pity]
+- `Expected draws to obtain rare = 1 / p_R` [without pity]
+- `With pity at K draws: P(success <= K) = 1; E[desired] = sum from i=1 to K-1 of (i * ...) + K * P(fail_all_before_K)`
 
-- **Input expectations**: Accepts bullet points, rough ideas, or existing documents. Asks clarifying questions if scope is ambiguous.
-- **Step-by-step procedures**: Follows the workflow above, emitting structured Markdown by default.
-- **Decision points**: Adapts depth based on project scale (indie vs AAA) and user role (designer vs programmer).
-- **Quality criteria**: Outputs are specific, measurable, unambiguous, and aligned with stated goals.
-- **Common pitfalls**: Avoids vague language, over-specification prematurely, and ignoring technical constraints.
+Psychological interpretation:
+- Miss risk within 50 draws = 1 - (1-p)^50
+- Cost for 80% confidence to obtain: rank of from individual plan
 
-## Output Format
+## Workflow
 
-Primarily outputs structured Markdown with clear headings, tables, and lists. Can also produce:
-- CSV/Excel tables (via data-table-generator sub-skill)
-- Diagrams described in Mermaid syntax
-- JSON schemas for data structures
-- Pseudocode or language-agnostic logic specs
+1. Identify the random mechanism precisely (synthesis table, pull step, drop tables, multiple bags model).
+2. Select analytic model: closed-form formula OR Monte Carlo simulation required (more than 2 sources of compounding RNG).
+3. Compute:
+   - EV(s) for key outcomes (profit, emotion, internal rate)
+   - Variance / stddev
+   - At least 3 confidence percentiles (P=25%, P=50%, P=95%)
+4. Pity analysis: without guarantee, what is P(gamer goes 200 draws with nothing)?
+5. Cost estimation: normal pay per pull, spiral for 95% confidence interval.
+6. Fairness check: V%Economic LTV vs cost; maximum loss for avg player monetization.
 
-When appropriate, the skill will suggest using companion skills (e.g., data-table-generator for numbers, level-design for maps) and invoke them.
+## Output Format (always)
 
-## Resources (optional)
+- Probability distribution table (single/double-sided)
+- P(success over N draws table) for three profiles (F2P, average, whale)
+- Confidence intervals: 25%, 50%, 95%
+- Pity compensation analysis
+- Cost per 100% outcome calculation
+- Suggested rates ranges with rationale
 
-### scripts/
-- generate_gdd.py – Helper script to convert structured data into full GDD Markdown.
-- balance_calc.py – Probability and expected value calculator for game systems.
-- level_template.py – Procedural level layout generator based on parameters.
 
-### references/
-- gdd_structure.md – Canonical outline of a professional GDD.
-- system_design_patterns.md – Common architectural patterns in game systems.
-- monetization_models.csv – Reference table of f2p, premium, and hybrid models.
+### Confidence Interval Reporting
 
-### assets/
-- gdd_template.docx – Optional Word template for teams requiring DOCX.
-- icon_set/ – Simple PNG icons for Milestones, Systems, Features.
+- 50% (median draw count)
+- 80% (most players within band)
+- 95% (compliance and rarity)
 
----
+Produce a "worst case table" showing 200 draws at extreme low effort for compliance review.
+## Common Pitfalls
+
+- Ignoring replacement effects (loot table without replacement changes probabilities dramatically).
+- "Random is fine" without quantifying dry-run length; some players will always hit worst-case.
+- Using float round causing event to 100%+ or 0% due to accumulation bugs.
